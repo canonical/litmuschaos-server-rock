@@ -1,0 +1,16 @@
+name: Update rock
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+    uses: canonical/observability/.github/workflows/rock-update.yaml@v1
+    with:
+      rock-name: litmuschaos-server
+      # TODO: can we ensure it only gets rebuilt when there's a new release of this component only?
+      source-repo: https://github.com/litmuschaos/litmus
+      check-go: true
+    secrets: inherit
