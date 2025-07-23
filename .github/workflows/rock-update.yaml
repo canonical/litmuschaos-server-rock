@@ -12,5 +12,16 @@ jobs:
       rock-name: litmuschaos-server
       # TODO: can we ensure it only gets rebuilt when there's a new release of this component only?
       source-repo: https://github.com/litmuschaos/litmus
-      check-go: true
+      # litmuschaos is a monorepo, so we'll need a custom script to update the golang version
+      update-script: |
+        go_version="$(grep -Po "^go \K(\S+)" "$application_src/chaoscenter/graphql/server/go.mod")" \
+        # Delete the Go dependency and add the updated one
+        yq -i 'del(.parts.litmuschaos-server.build-snaps.[] | select(. == "go/*"))' \
+        "$rockcraft_yaml"
+        # Snap channels are named after major.minor only, so cut the go version to that format
+        go_major_minor="$(echo "$go_version" | sed -E "s/([0-9]+\.[0-9]+).*/\1/")"
+        go_v="$go_major_minor" yq -i \
+        '.parts.litmuschaos-server.build-snaps += "go/"+strenv(go_v)+"/stable"' \
+        "$rockcraft_yaml"
+      check-go: false
     secrets: inherit
