@@ -11,10 +11,9 @@ services:
   litmuschaos-server:
     command: server
     override: replace
-    # there's no point enabling it: it will never work out-of-the-box given that it needs several
+    # it will start and error out immediately: it needs several
     # other components and configurations to function properly.
-    startup: disabled
-
+    startup: enabled
 
 platforms:
   amd64:
