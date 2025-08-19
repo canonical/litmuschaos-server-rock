@@ -11,8 +11,9 @@ jobs:
     with:
       rock-name: litmuschaos-server
       # TODO: can we ensure it only gets rebuilt when there's a new release of this component only?
-      source-repo: https://github.com/litmuschaos/litmus
+      source-repo: litmuschaos/litmus
       # litmuschaos is a monorepo, so we'll need a custom script to update the golang version
+      # we need to escape '$' to avoid variable expansions by the shared CI workflow.
       update-script: |
         git clone --depth 1 https://github.com/litmuschaos/litmus.git "\$GITHUB_WORKSPACE/application-src"
         go_version="\$(grep -Po "^go \K(\S+)" "\$GITHUB_WORKSPACE/application-src/chaoscenter/graphql/server/go.mod")"
