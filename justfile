@@ -53,5 +53,5 @@ test version=latest_version: (push-to-registry version)
       -e WORKFLOW_HELPER_IMAGE_VERSION="ci" \
       -e INFRA_COMPATIBLE_VERSIONS="ci" \
       -e DEFAULT_HUB_BRANCH_NAME="master" \
-      localhost:32000/litmuschaos-server-dev:3.19.0
+      "localhost:32000/litmuschaos-server-dev:$version"
   docker rm -f litmuschaos-server
