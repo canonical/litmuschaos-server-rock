@@ -8,7 +8,7 @@ base: ubuntu@24.04
 license: Apache-2.0
 
 services:
-  litmuschaos-server:
+  backend:
     command: server
     override: replace
     # it will start and error out immediately: it needs several
@@ -28,8 +28,6 @@ parts:
     source-subdir: chaoscenter/graphql/server
     build-snaps:
       - go/1.22/stable
-#    override-build: |
-#      CGO_ENABLED=0 go build -o "${CRAFT_PART_INSTALL}/server" -v
     stage:
       - bin/server
 
