@@ -1,0 +1,41 @@
+# upstream: https://github.com/litmuschaos/litmus/blob/master/chaoscenter/graphql/server/Dockerfile
+
+name: litmuschaos-server
+summary: Petrified litmuschaos-server.
+description: "Litmus server AKA 'graphql server'."
+version: "3.20.0"
+base: ubuntu@24.04
+license: Apache-2.0
+services:
+  backend:
+    command: server
+    override: replace
+    # it will start and error out immediately: it needs several
+    # other components and configurations to function properly.
+    startup: enabled
+platforms:
+  amd64:
+parts:
+  litmuschaos-server:
+    plugin: go
+    source: https://github.com/litmuschaos/litmus
+    source-type: git
+    source-tag: "3.20.0"
+    source-depth: 1
+    source-subdir: chaoscenter/graphql/server
+    build-snaps:
+      - go/1.22/stable
+    stage:
+      - bin/server
+  ca-certs:
+    plugin: nil
+    overlay-packages: [ca-certificates]
+  deb-security-manifest:
+    plugin: nil
+    after:
+      - litmuschaos-server
+      - ca-certs
+    override-prime: |
+      set -x
+      mkdir -p $CRAFT_PRIME/usr/share/rocks/
+      (echo "# os-release" && cat /etc/os-release && echo "# dpkg-query" && dpkg-query --admindir=$CRAFT_PRIME/var/lib/dpkg/ -f '${db:Status-Abbrev},${binary:Package},${Version},${source:Package},${Source:Version}\n' -W) > $CRAFT_PRIME/usr/share/rocks/dpkg.query
