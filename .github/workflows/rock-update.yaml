@@ -11,7 +11,7 @@ jobs:
     with:
       rock-name: litmuschaos-server
       # TODO: can we ensure it only gets rebuilt when there's a new release of this component only?
-      source-repo: https://github.com/litmuschaos/litmus
+      source-repo: litmuschaos/litmus
       # litmuschaos is a monorepo, so we'll need a custom script to update the golang version
       update-script: |
         # When editing the script, make sure to escape all dollar signs to prevent variables from being evaluated
