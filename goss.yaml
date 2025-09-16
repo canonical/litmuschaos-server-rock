@@ -4,3 +4,4 @@ process:
 file:
   /VERSION:
     exists: true
+    contents: [{{ .Env.VERSION }}]
