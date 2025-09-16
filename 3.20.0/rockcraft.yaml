@@ -25,8 +25,13 @@ parts:
     source-subdir: chaoscenter/graphql/server
     build-snaps:
       - go/1.22/stable
+    override-build: |
+      # write the workload version into a VERSION file
+      echo "$(craftctl get version)" > "${CRAFT_PART_INSTALL}/VERSION"
+      craftctl default
     stage:
       - bin/server
+      - VERSION
   ca-certs:
     plugin: nil
     overlay-packages: [ca-certificates]

@@ -1,0 +1,6 @@
+process:
+  server:
+    running: true
+file:
+  /VERSION:
+    exists: true
