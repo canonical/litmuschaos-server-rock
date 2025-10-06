@@ -28,9 +28,12 @@ parts:
     override-build: |
       # write the workload version into a VERSION file
       echo "$(craftctl get version)" > "${CRAFT_PART_INSTALL}/VERSION"
+      cp -r chaoscenter/graphql/server/manifests ${CRAFT_PART_INSTALL}
+      ls -al ${CRAFT_PART_INSTALL}
       craftctl default
     stage:
       - bin/server
+      - manifests/*
       - VERSION
   ca-certs:
     plugin: nil
