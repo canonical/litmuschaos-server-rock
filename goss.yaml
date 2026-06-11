@@ -1,7 +1,4 @@
-process:
+command:
   server:
-    running: true
-file:
-  /VERSION:
-    exists: true
-    contents: [{{ .Env.VERSION }}]
+    exec: "command -v server"
+    exit-status: 0
